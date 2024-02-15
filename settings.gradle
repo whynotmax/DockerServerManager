@@ -1,0 +1,4 @@
+rootProject.name = 'DockerMinecraftManager'
+include 'launcher'
+include 'main'
+
