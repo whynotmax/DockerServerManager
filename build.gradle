@@ -1,72 +1,19 @@
-import org.apache.tools.ant.filters.ReplaceTokens
-
 plugins {
-    id 'com.github.johnrengelman.shadow' version '8.0.0'
-    id 'maven-publish'
-    id 'net.kyori.blossom' version '1.2.0'
-    id 'dev.vankka.dependencydownload.plugin' version '1.3.1'
+    id 'java'
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'com.github.johnrengelman.shadow'
-    apply plugin: 'maven-publish'
-    apply plugin: 'net.kyori.blossom'
-    apply plugin: 'dev.vankka.dependencydownload.plugin'
+group = 'dev.mzcy'
+version = '1.0-SNAPSHOT'
 
-    group "${groupId}"
-    version "${projectVersion}"
+repositories {
+    mavenCentral()
+}
 
-    repositories {
-        mavenCentral()
-        maven { url 'https://repo.papermc.io/repository/maven-public/' }
+dependencies {
+    testImplementation platform('org.junit:junit-bom:5.9.1')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
+}
 
-        maven { url 'https://reposilite.koboo.eu/releases' }
-
-        maven { url 'https://repo.alessiodp.com/releases/' }
-
-        maven { url 'https://repo.cloudnetservice.eu/repository/releases/' }
-
-        maven { url 'https://jitpack.io' }
-    }
-
-    java {
-        toolchain.languageVersion.set(JavaLanguageVersion.of(17))
-        targetCompatibility = JavaVersion.VERSION_17
-        sourceCompatibility = JavaVersion.VERSION_17
-    }
-
-    compileJava {
-        options.fork = true
-        options.incremental = true
-        options.encoding = 'UTF-8'
-        options.release.set(17)
-    }
-
-    configurations {
-        compileOnly {
-            extendsFrom annotationProcessor
-        }
-    }
-
-    tasks.withType(JavaCompile).configureEach {
-        options.encoding = 'UTF-8'
-    }
-/*
-    blossom {
-        replaceToken('PROJECT_NAME', project.name)
-        replaceToken('PROJECT_VERSION', project.version)
-        replaceToken('PROJECT_GROUP', group)
-    }
-
-    // Replace tokens in plugin.yml files
-    processResources {
-        filesMatching('**//*plugin.yml') {
-            filter(ReplaceTokens, tokens: [
-                    'PROJECT_VERSION': project.version.toString(),
-                    'PROJECT_NAME'   : project.name.toString(),
-                    'PROJECT_AUTHORS': "mzcy_",
-            ])
-        }
-    }*/
+test {
+    useJUnitPlatform()
 }
